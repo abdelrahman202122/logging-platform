@@ -76,7 +76,7 @@ const sendProductionError = (error, res) => {
   });
 };
 
-const errorHandler = (error, _req, res) => {
+const errorHandler = (error, _req, res, _next) => {
   const normalizedError = normalizeError(error);
 
   if (env.nodeEnv === 'production') {
