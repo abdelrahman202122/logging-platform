@@ -1,7 +1,9 @@
 const { LOG_LEVELS } = require('../constants/logLevels');
 const { ApiError } = require('../utils/apiError');
 
-const validateLogPayload = ({ message, level }) => {
+const validateLogPayload = (payload = {}) => {
+  const { message, level } = payload;
+
   if (!message || !level) {
     throw new ApiError(400, 'Message and level are required');
   }

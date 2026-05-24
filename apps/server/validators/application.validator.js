@@ -1,6 +1,8 @@
 const { ApiError } = require("../utils/apiError");
 
-const validateApplicationPayload = ({ name }) => {
+const validateApplicationPayload = (payload = {}) => {
+  const { name } = payload;
+
   if (!name) {
     throw new ApiError(400, "Application name is required");
   }
