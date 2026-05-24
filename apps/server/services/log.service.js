@@ -5,6 +5,7 @@ const {
   findApplicationByNameAndDeveloper,
 } = require('../repositories/application.repository');
 const {
+  getLogSummaryByApplication,
   findLogsByApplication,
   incrementOrCreateLog,
 } = require('../repositories/log.repository');
@@ -24,6 +25,18 @@ const getApplicationLogs = async (
   }
 
   return findLogsByApplication(application._id, queryOptions);
+};
+
+const getApplicationLogsSummary = async (applicationName, developerId) => {
+  const application = await findApplicationByNameAndDeveloper(
+    applicationName,
+    developerId,
+  );
+  if (!application) {
+    throw new ApiError(404, 'Application not found');
+  }
+
+  return getLogSummaryByApplication(application._id);
 };
 
 const saveApplicationLog = async (applicationName, apiKey, payload) => {
@@ -50,4 +63,8 @@ const saveApplicationLog = async (applicationName, apiKey, payload) => {
   });
 };
 
-module.exports = { getApplicationLogs, saveApplicationLog };
+module.exports = {
+  getApplicationLogs,
+  getApplicationLogsSummary,
+  saveApplicationLog,
+};

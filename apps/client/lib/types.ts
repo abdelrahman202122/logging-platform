@@ -50,6 +50,29 @@ export type LogsResponse = {
   pagination: Pagination;
 };
 
+export type LogLevelCount = {
+  _id: LogLevel;
+  count: number;
+  uniqueLogs: number;
+};
+
+export type DailyLogCount = {
+  day: string;
+  level: LogLevel;
+  count: number;
+};
+
+export type LogsSummary = {
+  levelCounts: LogLevelCount[];
+  dailyCounts: DailyLogCount[];
+  totals: {
+    totalEvents: number;
+    uniqueLogs: number;
+  };
+  latestLog: ApplicationLog | null;
+  topLog: ApplicationLog | null;
+};
+
 export type LoginPayload = {
   email: string;
   password: string;

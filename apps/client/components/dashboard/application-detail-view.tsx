@@ -4,6 +4,7 @@ import { AlertCircle, ArrowLeft, Loader2 } from "lucide-react";
 import Link from "next/link";
 import * as React from "react";
 
+import { ApplicationLogInsights } from "@/components/dashboard/application-log-insights";
 import { ApplicationLogsTable } from "@/components/dashboard/application-logs-table";
 import { DashboardHeader } from "@/components/dashboard/dashboard-header";
 import { Badge } from "@/components/ui/badge";
@@ -129,6 +130,7 @@ export function ApplicationDetailView({
               </CardContent>
             </Card>
 
+            <ApplicationLogInsights applicationName={application.name} />
             <ApplicationLogsTable applicationName={application.name} />
           </>
         ) : null}

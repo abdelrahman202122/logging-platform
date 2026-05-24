@@ -1,0 +1,25 @@
+{
+  "name": "logging-platform-server-sdk",
+  "version": "0.1.0",
+  "description": "Server SDK for sending logs to the Logging Platform API.",
+  "main": "src/index.js",
+  "types": "src/index.d.ts",
+  "files": [
+    "src",
+    "README.md"
+  ],
+  "scripts": {
+    "test": "node --test",
+    "check": "node --check src/index.js"
+  },
+  "keywords": [
+    "logging",
+    "logs",
+    "server-sdk"
+  ],
+  "author": "Abdelrahman Ezzat",
+  "license": "ISC",
+  "engines": {
+    "node": ">=18"
+  }
+}

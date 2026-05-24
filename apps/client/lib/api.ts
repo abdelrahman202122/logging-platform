@@ -6,6 +6,7 @@ import type {
   LoginPayload,
   LogsQuery,
   LogsResponse,
+  LogsSummary,
   RegisterPayload,
 } from "@/lib/types";
 
@@ -128,6 +129,10 @@ export const api = {
     apiRequest<Application>(`/api/applications/${encodeURIComponent(name)}`, {
       method: "DELETE",
     }),
+  logsSummary: (applicationName: string) =>
+    apiRequest<LogsSummary>(
+      `/api/applications/${encodeURIComponent(applicationName)}/logs/summary`,
+    ),
   logs: (applicationName: string, query: LogsQuery = {}) => {
     const searchParams = {
       page: query.page ?? 1,

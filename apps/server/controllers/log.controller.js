@@ -1,5 +1,6 @@
 const {
   getApplicationLogs,
+  getApplicationLogsSummary,
   saveApplicationLog,
 } = require('../services/log.service');
 const { getApiKey } = require('../middleware/apiKey.middleware');
@@ -18,6 +19,14 @@ const getLogs = async (req, res) => {
   res.status(200).json({ success: true, data });
 };
 
+const getLogsSummary = async (req, res) => {
+  const data = await getApplicationLogsSummary(
+    req.params.name,
+    req.developer._id,
+  );
+  res.status(200).json({ success: true, data });
+};
+
 const postLog = async (req, res) => {
   validateLogPayload(req.body);
   const log = await saveApplicationLog(
@@ -28,4 +37,4 @@ const postLog = async (req, res) => {
   res.status(201).json({ success: true, data: log });
 };
 
-module.exports = { getLogs, postLog };
+module.exports = { getLogs, getLogsSummary, postLog };
