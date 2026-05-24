@@ -42,6 +42,18 @@ const buildUrl = (path: string, query?: Record<string, string | number>) => {
   return url.toString();
 };
 
+const buildPath = (path: string, query?: Record<string, string | number>) => {
+  const url = new URL(path, API_BASE_URL);
+
+  Object.entries(query ?? {}).forEach(([key, value]) => {
+    if (value !== "" && value !== undefined && value !== null) {
+      url.searchParams.set(key, String(value));
+    }
+  });
+
+  return `${url.pathname}${url.search}`;
+};
+
 export async function apiRequest<T>(
   path: string,
   options: RequestOptions = {},
@@ -105,8 +117,17 @@ export const api = {
       method: "POST",
     }),
   applications: () => apiRequest<Application[]>("/api/applications"),
+  createApplication: (payload: { name: string }) =>
+    apiRequest<Application>("/api/applications", {
+      method: "POST",
+      body: payload,
+    }),
   application: (name: string) =>
     apiRequest<Application>(`/api/applications/${encodeURIComponent(name)}`),
+  deleteApplication: (name: string) =>
+    apiRequest<Application>(`/api/applications/${encodeURIComponent(name)}`, {
+      method: "DELETE",
+    }),
   logs: (applicationName: string, query: LogsQuery = {}) => {
     const searchParams = {
       page: query.page ?? 1,
@@ -118,10 +139,10 @@ export const api = {
     };
 
     return apiRequest<LogsResponse>(
-      buildUrl(
+      buildPath(
         `/api/applications/${encodeURIComponent(applicationName)}/logs`,
         searchParams,
-      ).replace(API_BASE_URL, ""),
+      ),
     );
   },
 };
