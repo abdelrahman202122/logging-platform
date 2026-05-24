@@ -1,6 +1,6 @@
-"use client";
+'use client';
 
-import { zodResolver } from "@hookform/resolvers/zod";
+import { zodResolver } from '@hookform/resolvers/zod';
 import {
   AlertCircle,
   ArrowRight,
@@ -8,28 +8,39 @@ import {
   Plus,
   RefreshCw,
   Trash2,
-} from "lucide-react";
-import Link from "next/link";
-import * as React from "react";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
+} from 'lucide-react';
+import Link from 'next/link';
+import * as React from 'react';
+import { useForm } from 'react-hook-form';
+import { z } from 'zod';
 
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { api, ApiError } from "@/lib/api";
-import { formatDateTime } from "@/lib/date";
-import { routes } from "@/lib/routes";
-import type { Application } from "@/lib/types";
-import { applicationSchema } from "@/lib/validation";
+} from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from '@/components/ui/alert-dialog';
+import { api, ApiError } from '@/lib/api';
+import { formatDateTime } from '@/lib/date';
+import { routes } from '@/lib/routes';
+import type { Application } from '@/lib/types';
+import { applicationSchema } from '@/lib/validation';
 
 type ApplicationFormValues = z.infer<typeof applicationSchema>;
 
@@ -48,7 +59,7 @@ export function ApplicationsSection() {
   } = useForm<ApplicationFormValues>({
     resolver: zodResolver(applicationSchema),
     defaultValues: {
-      name: "",
+      name: '',
     },
   });
 
@@ -63,7 +74,7 @@ export function ApplicationsSection() {
       setLoadError(
         error instanceof ApiError
           ? error.message
-          : "Unable to load applications.",
+          : 'Unable to load applications.',
       );
     } finally {
       setIsLoading(false);
@@ -90,7 +101,7 @@ export function ApplicationsSection() {
         setLoadError(
           error instanceof ApiError
             ? error.message
-            : "Unable to load applications.",
+            : 'Unable to load applications.',
         );
       } finally {
         if (isActive) {
@@ -117,20 +128,12 @@ export function ApplicationsSection() {
       setFormError(
         error instanceof ApiError
           ? error.message
-          : "Unable to create application.",
+          : 'Unable to create application.',
       );
     }
   });
 
   const deleteApplication = async (application: Application) => {
-    const confirmed = window.confirm(
-      `Delete ${application.name}? This also removes its logs.`,
-    );
-
-    if (!confirmed) {
-      return;
-    }
-
     setDeletingName(application.name);
     setLoadError(null);
 
@@ -143,7 +146,7 @@ export function ApplicationsSection() {
       setLoadError(
         error instanceof ApiError
           ? error.message
-          : "Unable to delete application.",
+          : 'Unable to delete application.',
       );
     } finally {
       setDeletingName(null);
@@ -161,7 +164,7 @@ export function ApplicationsSection() {
             </CardDescription>
           </div>
           <Badge variant="secondary">
-            {applications.length} {applications.length === 1 ? "app" : "apps"}
+            {applications.length} {applications.length === 1 ? 'app' : 'apps'}
           </Badge>
         </div>
       </CardHeader>
@@ -176,7 +179,7 @@ export function ApplicationsSection() {
               id="application-name"
               placeholder="billing-service"
               aria-invalid={Boolean(errors.name)}
-              {...register("name")}
+              {...register('name')}
             />
             {errors.name ? (
               <p className="text-sm text-destructive">{errors.name.message}</p>
@@ -208,7 +211,7 @@ export function ApplicationsSection() {
               type="button"
               variant="outline"
             >
-              <RefreshCw className={isLoading ? "animate-spin" : undefined} />
+              <RefreshCw className={isLoading ? 'animate-spin' : undefined} />
               Refresh
             </Button>
           </div>
@@ -286,16 +289,45 @@ function ApplicationRow({
         <Button asChild size="sm" variant="outline">
           <Link href={routes.application(application.name)}>View</Link>
         </Button>
-        <Button
-          disabled={isDeleting}
-          onClick={() => onDelete(application)}
-          size="sm"
-          type="button"
-          variant="destructive"
-        >
-          {isDeleting ? <Loader2 className="animate-spin" /> : <Trash2 />}
-          Delete
-        </Button>
+        <AlertDialog>
+          <AlertDialogTrigger asChild>
+            <Button
+              disabled={isDeleting}
+              size="sm"
+              type="button"
+              variant="destructive"
+            >
+              {isDeleting ? <Loader2 className="animate-spin" /> : <Trash2 />}
+              Delete
+            </Button>
+          </AlertDialogTrigger>
+
+          <AlertDialogContent>
+            <AlertDialogHeader>
+              <AlertDialogTitle>Delete application?</AlertDialogTitle>
+
+              <AlertDialogDescription>
+                This will permanently delete{' '}
+                <span className="font-medium text-foreground">
+                  {application.name}
+                </span>{' '}
+                and all associated logs.
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+
+            <AlertDialogFooter>
+              <AlertDialogCancel>Cancel</AlertDialogCancel>
+              <AlertDialogAction asChild>
+                <Button
+                  onClick={() => onDelete(application)}
+                  className="text-destructive-foreground bg-destructive hover:bg-destructive/90"
+                >
+                  Delete
+                </Button>
+              </AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
       </div>
     </div>
   );
