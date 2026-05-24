@@ -34,6 +34,13 @@ const login = async (req, res) => {
   sendAuthResponse(res, 200, data);
 };
 
+const me = (req, res) => {
+  res.status(200).json({
+    success: true,
+    data: req.developer.toSafeObject(),
+  });
+};
+
 const logout = (_req, res) => {
   res.clearCookie('token', cookieOptions);
   res.status(200).json({
@@ -42,4 +49,4 @@ const logout = (_req, res) => {
   });
 };
 
-module.exports = { register, login, logout };
+module.exports = { register, login, me, logout };

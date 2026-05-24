@@ -48,15 +48,24 @@ export async function apiRequest<T>(
 ): Promise<T> {
   const { body, headers, ...init } = options;
 
-  const response = await fetch(buildUrl(path), {
-    ...init,
-    credentials: "include",
-    headers: {
-      "Content-Type": "application/json",
-      ...headers,
-    },
-    body: body === undefined ? undefined : JSON.stringify(body),
-  });
+  let response: Response;
+
+  try {
+    response = await fetch(buildUrl(path), {
+      ...init,
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+        ...headers,
+      },
+      body: body === undefined ? undefined : JSON.stringify(body),
+    });
+  } catch {
+    throw new ApiError(
+      `Could not reach the API at ${API_BASE_URL}. Make sure the backend server is running.`,
+      0,
+    );
+  }
 
   const payload = (await response.json().catch(() => null)) as
     | ApiResponse<T>
@@ -90,6 +99,7 @@ export const api = {
       method: "POST",
       body: payload,
     }),
+  me: () => apiRequest<Developer>("/api/users/me"),
   logout: () =>
     apiRequest<void>("/api/users/logout", {
       method: "POST",
