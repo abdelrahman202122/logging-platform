@@ -10,7 +10,7 @@ const { env } = require('../config/env');
 
 const cookieOptions = {
   httpOnly: true,
-  sameSite: 'strict',
+  sameSite: 'none',
   secure: env.nodeEnv === 'production',
 };
 
