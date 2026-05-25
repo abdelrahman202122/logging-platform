@@ -14,6 +14,13 @@ app.use(cors({ origin: true, credentials: true }));
 app.use(express.json());
 app.use(cookieParser());
 
+app.get('/', (req, res) => {
+  res.json({
+    success: true,
+    message: 'Logging Platform API is running',
+  });
+});
+
 app.use('/api/users', userRoutes);
 app.use('/api/applications', applicationRoutes);
 
