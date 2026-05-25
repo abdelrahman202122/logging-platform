@@ -188,7 +188,7 @@ const loggingPlatform = require('logging-platform-server-sdk');
 loggingPlatform.init({
   apiKey: process.env.LOGGING_PLATFORM_API_KEY,
   applicationName: 'my-app',
-  baseUrl: 'http://localhost:5000', // or your production URL
+  baseUrl: 'https://logging-platform.onrender.com/', // or your production URL
 });
 
 // Log a message

@@ -5,7 +5,7 @@ Next.js dashboard frontend for the logging platform.
 ## Environment
 
 ```bash
-NEXT_PUBLIC_API_BASE_URL=http://localhost:5000
+NEXT_PUBLIC_API_BASE_URL=https://logging-platform.onrender.com/
 ```
 
 ## Scripts

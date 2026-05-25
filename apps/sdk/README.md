@@ -16,7 +16,7 @@ const loggingPlatform = require('logging-platform-server-sdk');
 loggingPlatform.init({
   apiKey: process.env.LOGGING_PLATFORM_API_KEY,
   applicationName: 'billing-service',
-  baseUrl: 'https://your-logging-api.example.com',
+  baseUrl: 'https://logging-platform.onrender.com/',
 });
 
 await loggingPlatform.log({
@@ -48,7 +48,7 @@ Stores a default SDK client.
 init({
   apiKey: 'developer-api-key',
   applicationName: 'unique-application-name',
-  baseUrl: 'http://localhost:5000',
+  baseUrl: 'https://logging-platform.onrender.com/',
 });
 ```
 
